@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../auth.context";
 import { login, register, logout, getMe } from "../services/auth.api";
 
@@ -42,17 +42,14 @@ export const useAuth = () => {
     }
   };
 
-  const handleGetme = async () => {
-    setLoading(true);
-    try {
+  useEffect(() => {
+    const getAndSetUser = async () => {
       const data = await getMe();
       setUser(data.user);
-    } catch (err) {
-      console.error("Error fetching user:", err);
-    } finally {
       setLoading(false);
-    }
-  };
+    };
+    getAndSetUser();
+  }, []);
 
   return {
     user,
@@ -60,6 +57,5 @@ export const useAuth = () => {
     handleLogin,
     handleLogout,
     handleRegister,
-    handleGetme,
   };
 };
