@@ -6,6 +6,7 @@ import cors from "cors";
  * Importing routes here
  */
 import authRouter from "./routes/auth.route.js";
+import interviewRouter from "./routes/intervirew.route.js";
 
 const app = express();
 
@@ -19,5 +20,6 @@ app.use(
 );
 
 app.use("/api/auth", authRouter);
+app.use("/api", interviewRouter)
 
 export default app;
