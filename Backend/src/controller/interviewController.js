@@ -2,7 +2,7 @@ import { PDFParse } from "pdf-parse";
 import generateInterviewReport from "../services/ai.service.js";
 import interviewReportModel from "../models/interviewReport.model.js";
 
-export async function generateInterviewReportController(req, res) {
+async function generateInterviewReportController(req, res) {
   try {
     if (!req.file) {
       return res.status(400).json({
@@ -50,5 +50,42 @@ export async function generateInterviewReportController(req, res) {
     });
   }
 }
+async function getInterviewReportByIdController(req, res) {
+  const { interviewId } = req.params;
 
-// export default generateInterviewReportController
+  const interviewReport = await interviewReportModel.findById({
+    _id: interviewId,
+    user: req.user.id,
+  });
+
+  if (!interviewReport) {
+    return res.status(404).json({
+      message: "Interview report not found!",
+    });
+  }
+
+  return res.status(200).json({
+    message: "Interview report fetched successfully...",
+    interviewReport,
+  });
+}
+
+async function getAllInterviewReportsController(req, res) {
+  const interviewReports = await interviewReportModel
+    .find({ user: req.user.id })
+    .sort({ createdAt: -1 })
+    .select(
+      "-resume -selfDescription -jobDescription -__v -technicalQuestions -behavioralQuestions -skillGaps -preparationPlan",
+    );
+
+  return res.status(200).json({
+    message: "Interview reports fetched successfully...",
+    interviewReports,
+  });
+}
+
+export default {
+  generateInterviewReportController,
+  getInterviewReportByIdController,
+  getAllInterviewReportsController,
+};
