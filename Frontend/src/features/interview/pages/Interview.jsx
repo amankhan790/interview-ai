@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../style/Interview.scss";
 import { useInterview } from "../hooks/useInterview";
+import { useParams } from "react-router-dom";
 
 const sections = [
   { key: "technical", label: "Technical Questions", icon: "<>" },
@@ -10,10 +11,21 @@ const sections = [
 
 const Interview = () => {
   const [activeSection, setActiveSection] = useState("roadmap");
-  const { report, loading } = useInterview();
+  const { report, getAllReportById, loading } = useInterview();
+  const { interviewId } = useParams();
 
-  if (loading) {
-    return <h1>Loading...</h1>;
+  useEffect(() => {
+    if (interviewId) {
+      getAllReportById(interviewId);
+    }
+  }, [interviewId, getAllReportById]);
+
+  if (loading || !report) {
+    return (
+      <main className="interview">
+        <h1>Loading your interview report...</h1>
+      </main>
+    );
   }
 
   const renderQuestions = (title, description, items) => (

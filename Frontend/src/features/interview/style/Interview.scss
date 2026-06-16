@@ -5,8 +5,16 @@
   display: grid;
   place-items: center;
   background:
-    radial-gradient(circle at top left, rgba(39, 174, 96, 0.14), transparent 30%),
-    radial-gradient(circle at bottom right, rgba(0, 168, 255, 0.12), transparent 28%),
+    radial-gradient(
+      circle at top left,
+      rgba(39, 174, 96, 0.14),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(0, 168, 255, 0.12),
+      transparent 28%
+    ),
     linear-gradient(180deg, #121212 0%, #1b1b1b 100%);
 }
 
@@ -451,6 +459,32 @@
 .interview__plan-item strong {
   text-align: right;
   color: #f6f6f6;
+}
+.home__reports {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 15px;
+
+  .home__reports-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+
+    .home__report-link {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border-radius: 10px;
+      border: 0;
+      background: rgba(255, 255, 255, 0.04);
+      color: rgba(255, 255, 255, 0.72);
+      text-align: left;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
 }
 
 @media (max-width: 1200px) {

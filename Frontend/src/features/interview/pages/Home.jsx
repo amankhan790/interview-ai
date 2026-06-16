@@ -1,15 +1,19 @@
 import "../style/Home.scss";
 import { useInterview } from "../hooks/useInterview";
 import { useNavigate } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Home = () => {
-  const { loading, generateReport } = useInterview();
+  const { loading, generateReport, getAllReports, reports } = useInterview();
   const [jobDescription, setJobDescription] = useState("");
   const [selfDescription, setSelfDescription] = useState("");
   const resumeRef = useRef(null);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    getAllReports();
+  }, [getAllReports]);
 
   const handleGenerateReport = async (event) => {
     event.preventDefault();
@@ -95,6 +99,31 @@ const Home = () => {
             </div>
           </div>
         </form>
+
+        <div className="home__reports">
+          <h2>Your Previous Reports</h2>
+          {reports.length === 0 ? (
+            <p>You have not generated any reports yet.</p>
+          ) : (
+            <ul className="home__reports-list">
+              {reports.map((report) => (
+                <li key={report._id}>
+                  <button
+                    onClick={() => navigate(`/interview/${report._id}`)}
+                    className="home__report-link"
+                  >
+                    {report.title}
+                    <span>
+                      {report.matchScore !== undefined
+                        ? `${report.matchScore}%`
+                        : ""}
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </section>
     </main>
   );

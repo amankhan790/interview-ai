@@ -30,6 +30,6 @@ export const getInterviewReportById = async (interviewId) => {
 };
 
 export const getAllInterviewsReports = async () => {
-  const response = await api.get("/api/interview/");
+  const response = await api.get("/api/interviews/");
   return response.data;
 };
