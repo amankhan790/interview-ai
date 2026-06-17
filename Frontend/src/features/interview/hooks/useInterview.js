@@ -2,6 +2,7 @@ import {
   generateInterview,
   getInterviewReportById,
   getAllInterviewsReports,
+  generateResumePdf,
 } from "../services/interview.api.js";
 import { useCallback, useContext } from "react";
 import { InterviewContext } from "../interview.context.jsx";
@@ -55,7 +56,7 @@ export const useInterview = () => {
     },
     [setLoading, setReport],
   );
-
+  
   const getAllReports = useCallback(async () => {
     setLoading(true);
     let response = null;
@@ -71,6 +72,33 @@ export const useInterview = () => {
     return response.interviewReports;
   }, [setLoading, setReports]);
 
+  
+  const getResumePdf = useCallback(
+    async (interviewReportId) => {
+      setLoading(true);
+      let response = null;
+      try {
+        response = await generateResumePdf({ interviewReportId });
+        const url = window.URL.createObjectURL(
+          new Blob([response], { type: "application/pdf" }),
+        );
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", `resume_${interviewReportId}.pdf`);
+        document.body.appendChild(link);
+        link.click();
+      } catch (error) {
+        console.error("Error generating resume PDF:", error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+      console.log(response);
+    },
+    [setLoading],
+  );
+
+
   return {
     loading,
     report,
@@ -78,5 +106,6 @@ export const useInterview = () => {
     generateReport,
     getAllReportById,
     getAllReports,
+    getResumePdf,
   };
 };

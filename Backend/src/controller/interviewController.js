@@ -90,6 +90,8 @@ async function getAllInterviewReportsController(req, res) {
 async function generateHtmlReportController(req, res) {
   const { interviewReportId } = req.params;
 
+  console.log("Interview Report ID:", interviewReportId);
+
   const interviewReport =
     await interviewReportModel.findById(interviewReportId);
 

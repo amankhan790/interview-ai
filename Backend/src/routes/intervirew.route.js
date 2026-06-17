@@ -49,7 +49,7 @@ interviewRouter.get(
  */
 
 interviewRouter.post(
-  "/resume/pdf/:interviewReportId",
+  "/interview/resume/pdf/:interviewReportId",
   authMiddleware.authUser,
   InterviewReport.generateHtmlReportController,
 );
