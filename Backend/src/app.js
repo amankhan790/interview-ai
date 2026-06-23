@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(cokieParser());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://interview-ai-m33n.vercel.app",
     credentials: true,
   }),
 );
