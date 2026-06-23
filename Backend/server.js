@@ -7,8 +7,10 @@ import connectDB from "./src/config/db.js";
 
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
+const PORT = process.env.PORT;
+
 connectDB();
 
-app.listen(3000, () => {
-  console.log("server is running on port 3000");
+app.listen(PORT, () => {
+  console.log(`server is running on port ${PORT}`);
 });

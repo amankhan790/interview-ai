@@ -20,6 +20,6 @@ app.use(
 );
 
 app.use("/api/auth", authRouter);
-app.use("/api", interviewRouter)
+app.use("/api", interviewRouter);
 
 export default app;
