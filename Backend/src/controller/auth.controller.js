@@ -3,6 +3,16 @@ import jwt from "jsonwebtoken";
 import userModel from "../models/user.model.js";
 import blacklistModel from "../models/blacklist.model.js";
 
+const isProduction =
+  process.env.NODE_ENV === "production" || Boolean(process.env.RENDER);
+
+const cookieOptions = {
+  httpOnly: true,
+  secure: isProduction,
+  sameSite: isProduction ? "none" : "lax",
+  maxAge: 24 * 60 * 60 * 1000,
+};
+
 async function registerUserController(req, res) {
   const { username, email, password } = req.body;
   if (!username || !email || !password) {
@@ -32,7 +42,7 @@ async function registerUserController(req, res) {
     },
   );
 
-  res.cookie("token", token);
+  res.cookie("token", token, cookieOptions);
   res.status(201).json({
     message: "User registered successfully",
     user: {
@@ -68,7 +78,7 @@ async function loginUserController(req, res) {
       expiresIn: "1d",
     },
   );
-  res.cookie("token", token);
+  res.cookie("token", token, cookieOptions);
   res.status(200).json({
     message: "User logged in successfully",
     user: {
@@ -87,7 +97,7 @@ async function logoutUserController(req, res) {
 
   const blacklistedToken = await blacklistModel.create({ token });
 
-  res.clearCookie("token");
+  res.clearCookie("token", cookieOptions);
 
   res.status(200).json({
     message: "User logged out successfully",

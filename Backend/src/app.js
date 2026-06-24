@@ -12,9 +12,22 @@ const app = express();
 
 app.use(express.json());
 app.use(cokieParser());
+const allowedOrigins = [
+  "https://interview-ai-m33n.vercel.app",
+  "http://localhost:5173",
+  process.env.CLIENT_URL,
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: "https://interview-ai-m33n.vercel.app",
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, origin);
+        return;
+      }
+
+      callback(new Error(`Origin ${origin} not allowed by CORS`));
+    },
     credentials: true,
   }),
 );
